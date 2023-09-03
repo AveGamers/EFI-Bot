@@ -19,15 +19,9 @@ const client = new Client({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
 		GatewayIntentBits.GuildMembers,
-	],
-  presence: {
-    activities: [{
-      name: `${config.status.text}`.replace("{prefix}", config.prefix), 
-      type: config.status.type, url: config.status.url
-    }],
-    status: "online"
+	]
   }
-}); //Discord Client   //This is a way to use the Discord Client in Node.js
+); //Discord Client   //This is a way to use the Discord Client in Node.js
 
 
 
@@ -78,6 +72,20 @@ client.on(Events.InteractionCreate, async interaction => {
 		}
 	}
 });
+
+
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+	const filePath = path.join(eventsPath, file);
+	const event = require(filePath);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
 
 
 client.on('ready', () => { //Discord Client Ready Event

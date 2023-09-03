@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "discord-html-transcripts": "^3.1.5",
     "discord.js": "^14.13.0"
   },
   "name": "efi-bot",

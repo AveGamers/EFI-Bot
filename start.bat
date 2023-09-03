@@ -14,6 +14,11 @@ ECHO "  "
 ECHO "Starting efi-bot..."
 
 node deploy-commands.js
-node bot.js
+
+Echo "Um den Bot zu stoppen, dieses Fenster schließen!"
+cd "D:\Projects\JavaScript\EFI-Bot"
+:loop
+Start node bot.js | set /P "="
+goto loop
 
 PAUSE
